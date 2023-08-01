@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Connect to MetaMask Wallet</title>
+    </head>
+    <body>
+        <button id="connect-button">Connect Wallet</button>
+        <div id="account-info"></div>
+        
+        <script src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js"></script>
+
+        <script>
+            document.getElementById('connect-button').addEventListener('click', async () => {
+                if (window.ethereum) {
+                    try {
+                        // Request account access
+                        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                
+                        const provider = new ethers.providers.Web3Provider(window.ethereum);
+                        console.log('Connected to account: ', accounts[0]);
+
+                        // Fetch account balance
+                        const balance = await provider.getBalance(accounts[0]);
+                        const etherBalance = ethers.utils.formatEther(balance);
+
+                        // Fetch network
+                        const network = await provider.getNetwork();
+                        const networkName = network.name;
+
+                        // Update account info
+                        document.getElementById('account-info').innerHTML = `
+                            <p>Connected Account: ${accounts[0]}</p>
+                            <p>Balance: ${etherBalance} ETH</p>
+                            <p>Network: ${networkName}</p>
+                        `;
+
+                        // You can start interacting with the connected account on ethereum network here
+                    } catch (error) {
+                        console.error("User denied account access");
+                    }
+                } 
+                // Non-dapp browsers...
+                else {
+                    console.log('Non-Ethereum browser detected. Consider installing MetaMask.');
+                }
+            });
+        </script>
+    </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html>
+    <head>
+        <title>Connect to MetaMask Wallet</title>
+    </head>
+    <body>
+        <button id="connect-button">Connect Wallet</button>
+
+        <script>
+            document.getElementById('connect-button').addEventListener('click', async () => {
+                if (window.ethereum) {
+                    try {
+                        // Request account access
+                        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            
+                        const provider = new ethers.providers.Web3Provider(window.ethereum);
+                        console.log('Connected to account: ', accounts[0]);
+            
+                        // You can start interacting with the connected account on ethereum network here
+                    } catch (error) {
+                        console.error("User denied account access");
+                    }
+                } 
+                // Non-dapp browsers...
+                else {
+                    console.log('Non-Ethereum browser detected. Consider installing MetaMask.');
+                }
+            });
+            
+        </script>
+    </body>
+    <script src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js"></script>
+
+</html> -->
+
+
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Connect MetaMask Wallet with PyScript</title>
+   
+    <script src="https://pyodide-cdn2.iodide.io/v0.17.0/full/pyodide.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/flexxui/flexx@master/flexx/assets/pyscript.js"></script>
+    <script>
+    window.loadPyodide({ indexURL: "https://pyodide-cdn2.iodide.io/v0.17.0/full/" });
+    </script>
+</head>
+<body>
+    <button id="connect-button">Connect Wallet</button>
+    <script type="text/python" id="pyscript_code">
+        from js import window
+
+        def connect_metamask():
+            if window.ethereum:
+                window.web3 = new Web3(window.ethereum)
+                try:
+                    window.ethereum.enable()
+                    accounts = window.web3.eth.getAccounts()
+                    print(accounts)
+                except Exception as e:
+                    print(str(e))
+            else:
+                print('No ethereum? You should consider trying MetaMask!')
+
+        # Get button by id
+        button = window.document.getElementById("connect-button")
+        # Add event listener
+        button.addEventListener("click", connect_metamask)
+
+    </script>
+</body>
+</html> -->
